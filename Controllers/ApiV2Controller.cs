@@ -5,7 +5,8 @@ namespace api_versioning.Contollers
     public class ApiV2Controller : Controller
     {
         [HttpGet("/hello")]
-        [Consumes("application/json", "applicaiton/vnd.unidays.v2+json")]
+        [ApiVersion("applicaiton/vnd.unidays.v2+json")]
+        //[Consumes("application/json", "applicaiton/vnd.unidays.v2+json")]
         public string GetSomething() => "Hello World V2!";
     
     
