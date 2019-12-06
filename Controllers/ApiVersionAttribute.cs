@@ -12,28 +12,20 @@ namespace api_versioning.Controllers {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ApiVersionUsedAttribute : Attribute, IActionConstraint
     {
-
-        public MediaType ApiVersionRequired { get; set; }
+        public string RequiredApiVersion { get; set; }
 
         public ApiVersionUsedAttribute(string apiVersion = "1")
         {            
-                var apiVersionRequired = $"application/vnd.unidays.v{apiVersion}+json";
-                ApiVersionRequired = new MediaType(apiVersionRequired);
+                RequiredApiVersion = $"application/vnd.unidays.v{apiVersion}+json";
         }
 
         public int Order => 0;
 
-        private bool IsRequestedApiSubsetOfRequiredApi(string requestedApi)
-        {
-            var parsedRequestedApi = new MediaType(requestedApi);
-            return parsedRequestedApi.IsSubsetOf(ApiVersionRequired);
-        }
-
         public bool Accept(ActionConstraintContext context)
         {
-            // Unsure of what the implication of this returning true is - it accepts if no header?
-            var requestedApiOnAccept = context.RouteContext.HttpContext.Request.Headers[HeaderNames.Accept];
-            return StringValues.IsNullOrEmpty(requestedApiOnAccept) || IsRequestedApiSubsetOfRequiredApi(requestedApiOnAccept);
+            // Unsure of what the implication of this returning true is if no header?
+            var requestedApiVersion = context.RouteContext.HttpContext.Request.Headers[HeaderNames.Accept];
+            return requestedApiVersion == RequiredApiVersion;
         }
     }
 }
