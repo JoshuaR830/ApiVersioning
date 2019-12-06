@@ -1,3 +1,4 @@
+using api_versioning.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_versioning.Contollers
@@ -5,14 +6,7 @@ namespace api_versioning.Contollers
     public class ApiV2Controller : Controller
     {
         [HttpGet("/hello")]
-        [ApiVersion("applicaiton/vnd.unidays.v2+json")]
-        //[Consumes("application/json", "applicaiton/vnd.unidays.v2+json")]
+        [ApiVersionUsed("2")]
         public string GetSomething() => "Hello World V2!";
-    
-    
-    
-        [HttpGet("/hello")]
-        [Consumes("application/json", "applicaiton/vnd.unidays.v3+json")]
-        public string GetSomethingElse() => "Hello World V3!";
     }
 }
